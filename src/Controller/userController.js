@@ -1,12 +1,11 @@
 require("dotenv").config();
 
-//console.log(USER_DATA);
 const USER_DATA = process.env.USER_DATA;
 const Users = JSON.parse(USER_DATA);
 
 const userData = (req, res) => {
   try {
-    return res.status(201).send({ status: true, data: Users });
+    return res.status(200).send({ status: true, data: Users });
   } catch (error) {
     return res.status(500).send({ status: "False", error: error.message });
   }
@@ -31,7 +30,13 @@ const getUserByName = (req, res) => {
         arr.push(Users[i]);
       }
     }
-    return res.send({ data: arr })
+
+    if (arr.length != 0) {
+      return res.status(200).send({ data: arr })
+    } else {
+      return res.send({ msg: `no user found with the name ${name}!!` })
+    }
+
   } catch (error) {
     return res.status(500).send({ status: "False", error: error.message });
   }
@@ -39,8 +44,3 @@ const getUserByName = (req, res) => {
 
 module.exports = { userData, CreateUser, getUserByName };
 
-/*
-PORT = 3000
-
-//USER_DATA = [{"name" : "Akash",age : 27,Role : "CEO"},{name : "Rahul",age : 23,Role : "BackEnd Developer"},{name : "Jyoti",age : 23,Role : "BackEnd Developer"},{name : "Suraj",age : 24,Role : "Frontend Developer"},{name : "Tarun",age : 23,Role : "Frontend Developer"},{name : "Farhan",age : 23,Role : "FrontEnd Developer"},{name : "Swyan",age : 24,Role : "UI/UX"}]
-*/
